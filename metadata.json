@@ -1,0 +1,5 @@
+{
+  "name": "TeamSync - 工作记录板",
+  "description": "一个供团队使用的协作任务跟踪板。用户可以记录日常任务，标记进度，并使用 Gemini 生成每日站会总结。",
+  "requestFramePermissions": []
+}
