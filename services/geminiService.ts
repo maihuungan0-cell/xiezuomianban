@@ -1,12 +1,19 @@
 import { GoogleGenAI } from "@google/genai";
 import { Task, User } from "../types";
 
-// Safety check for process.env to avoid runtime crashes in browser
-const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : '';
-const ai = new GoogleGenAI({ apiKey: apiKey });
-
 export const generateTeamSummary = async (tasks: Task[], users: User[]): Promise<string> => {
   try {
+    // Initialize inside the function to avoid top-level module evaluation crashes
+    // if process.env is not available in the browser environment immediately.
+    const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : '';
+    
+    if (!apiKey) {
+      console.warn("API Key is missing.");
+      return "无法生成总结：未配置 API 密钥。";
+    }
+
+    const ai = new GoogleGenAI({ apiKey: apiKey });
+
     // Prepare data for the prompt
     const today = new Date().setHours(0, 0, 0, 0);
     const recentTasks = tasks.filter(t => t.createdAt >= today || (t.completedAt && t.completedAt >= today));
@@ -47,6 +54,6 @@ export const generateTeamSummary = async (tasks: Task[], users: User[]): Promise
     return response.text || "无法生成总结。";
   } catch (error) {
     console.error("Error generating summary:", error);
-    return "生成总结失败。请检查您的 API 密钥并重试。";
+    return "生成总结失败。请稍后重试。";
   }
 };
