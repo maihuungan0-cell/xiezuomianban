@@ -60,7 +60,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentUser, users, onSelectUs
         ))}
 
         {isAdding ? (
-          <form onSubmit={handleAddSubmit} className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200 animate-in fade-in slide-in-from-top-2">
+          <form onSubmit={handleAddSubmit} className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200 animate-slideDown">
             <label className="block text-xs font-semibold text-slate-500 mb-1">新成员姓名</label>
             <input
               type="text"

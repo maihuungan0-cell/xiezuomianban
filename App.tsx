@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Layout, ListTodo, CheckCircle2, Sparkles, Filter, AlertCircle, User as UserIcon } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import type { User, Task } from './types';
 import { FilterType } from './types';
 import { Sidebar } from './components/Sidebar';
@@ -193,7 +194,7 @@ const App: React.FC = () => {
               </button>
            </form>
            {!currentUser && (
-               <div className="flex items-center gap-2 mt-2 text-amber-600 text-sm px-2">
+               <div className="flex items-center gap-2 mt-2 text-amber-600 text-sm px-2 animate-fadeIn">
                    <AlertCircle size={14} />
                    <span>请从左侧栏选择您的个人资料以开始记录。</span>
                </div>
@@ -228,7 +229,7 @@ const App: React.FC = () => {
         <div className="flex-1 overflow-y-auto px-6 py-4">
            <div className="max-w-4xl mx-auto space-y-2 pb-20">
               {filteredTasks.length === 0 ? (
-                  <div className="text-center py-20 opacity-50">
+                  <div className="text-center py-20 opacity-50 animate-fadeIn">
                       <ListTodo size={48} className="mx-auto mb-4 text-slate-300" />
                       <h3 className="text-lg font-medium text-slate-600">暂无任务</h3>
                       <p className="text-slate-400">尝试更改筛选条件或添加新任务。</p>
@@ -250,8 +251,8 @@ const App: React.FC = () => {
 
       {/* AI Summary Modal */}
       {isSummaryModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-zoomIn">
             <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
               <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800">
                 <Sparkles className="text-purple-600" />
@@ -270,19 +271,7 @@ const App: React.FC = () => {
                 </div>
               ) : (
                 <div className="prose prose-slate prose-sm max-w-none">
-                   {/* Simple line break rendering for safety without complex dependencies */}
-                   {summary?.split('\n').map((line, i) => (
-                       <p key={i} className="mb-2 leading-relaxed">
-                           {line.startsWith('- ') || line.startsWith('* ') ? (
-                               <span className="flex items-start gap-2">
-                                   <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
-                                   <span>{line.replace(/^[-*] /, '')}</span>
-                               </span>
-                           ) : (
-                               line.startsWith('#') ? <span className="block font-bold text-lg text-slate-800 mt-4 mb-2">{line.replace(/^#+ /, '')}</span> : line
-                           )}
-                       </p>
-                   ))}
+                   <ReactMarkdown>{summary || ''}</ReactMarkdown>
                 </div>
               )}
             </div>
